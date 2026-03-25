@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Firebase Push Test</title>
+
+<style>
+body{
+font-family:Arial;
+text-align:center;
+padding:40px;
+background:#111;
+color:white;
+}
+button{
+padding:15px 25px;
+margin:10px;
+font-size:16px;
+cursor:pointer;
+}
+</style>
+
+</head>
+<body>
+
+<h2>Firebase Push Notification Test</h2>
+
+<button onclick="subscribe()">Subscribe</button>
+
+<p id="status"></p>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const messaging = getMessaging(app);
+
+window.subscribe = async function(){
+
+const permission = await Notification.requestPermission();
+
+if(permission === "granted"){
+
+const token = await getToken(messaging,{
+vapidKey:"YOUR_VAPID_KEY"
+});
+
+document.getElementById("status").innerText="Subscribed!";
+console.log("TOKEN:",token);
+
+}else{
+alert("Permission denied");
+}
+
+}
+
+</script>
+
+</body>
+</html>
